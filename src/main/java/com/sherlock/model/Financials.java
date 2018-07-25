@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Financials {
 
-    private String hello;
     private String reportDate;
     private Double grossProfit;
     private Double costOfRevenue;
