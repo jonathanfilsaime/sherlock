@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 public class FinancialsResponseObject {
 
     private String symbol;
-    private Financials[] financials;
+    private Financials[] Financials;
 
 }
