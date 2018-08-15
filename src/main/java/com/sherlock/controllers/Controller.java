@@ -4,8 +4,15 @@ import com.sherlock.iex.IexApiCalls;
 import com.sherlock.model.Financials;
 import com.sherlock.model.FinancialsResponseObject;
 import com.sherlock.model.SymbolObjectResponse;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+
 
 @RestController
 public class Controller {
@@ -50,6 +57,25 @@ public class Controller {
 
             }
             System.out.println("============================================");
+        }
+    }
+
+    @RequestMapping("/soup")
+    public void soup()
+    {
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("https://finance.yahoo.com/quote/AAPL/financials?p=AAPL&.tsrc=fin-srch-v1").get();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Element table = doc.select("table").get(0);
+        Elements rows = table.select("tr");
+        Elements col = rows.select("td");
+
+        for ( Element c: col) {
+            System.err.println("------$$$$$$-------"+c.text());
         }
     }
 
