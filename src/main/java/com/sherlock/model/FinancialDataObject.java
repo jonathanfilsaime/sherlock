@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class FinancialsResponseObject {
+public class FinancialDataObject {
 
     private String symbol;
     private Financials[] Financials;
