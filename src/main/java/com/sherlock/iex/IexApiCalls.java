@@ -8,7 +8,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class IexApiCalls {
 
-    private final String URL_FINANCIAL = "https://api.iextrading.com/1.0/stock/";
+    private final String URL_FINANCIAL = "https://api.iextrading.com/1.0/stock/all";
     private final String URL_SYMBOL = "https://api.iextrading.com/1.0/ref-data/symbols";
 
     public ResponseEntity<FinancialDataObject> getFinancials()
