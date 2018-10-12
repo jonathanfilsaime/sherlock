@@ -29,4 +29,5 @@ public class Financials {
     private Double cashFlow;
     private String operatingGainsLosses;
 
+
 }
