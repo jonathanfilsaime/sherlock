@@ -8,12 +8,12 @@ import javax.persistence.*;
 @Data
 @Entity
 @NoArgsConstructor
-public class FinancialsResponseObject {
+public class FinancialDataObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String symbol;
-    private Financials[] financials;
+    private Financials[] Financials;
 
 }
