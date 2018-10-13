@@ -2,8 +2,14 @@ package com.sherlock.controllers;
 
 import com.sherlock.iex.IexApiCalls;
 import com.sherlock.model.Ratios;
+import com.sherlock.model.SymbolObjectResponse;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 public class Controller {
@@ -11,30 +17,40 @@ public class Controller {
     IexApiCalls iexApiCalls = new IexApiCalls();
     Ratios ratios = new Ratios();
 
-    @RequestMapping(value = "/financials")
-    public String financials()
+    @RequestMapping(path="/financials/{ticker}")
+    public String financials(@PathVariable String ticker)
     {
-        return iexApiCalls.getFinancials().getBody().getFinancials()[0].toString();
+        return iexApiCalls.getFinancials(ticker).getBody().getFinancials()[0].toString();
     }
 
-    @RequestMapping(value="/keystats")
-    public String keyStats()
+    @RequestMapping(path="/keystats/{ticker}")
+    @GetMapping("/{ticker}")
+    public String keyStats(@PathVariable String ticker)
     {
-        return iexApiCalls.getKeyStats().getBody().toString();
+        return iexApiCalls.getKeyStats(ticker).getBody().toString();
     }
 
-    @RequestMapping(value="/ratios")
-    public String ratios()
+    @RequestMapping(path="/ratios/{ticker}")
+    @GetMapping("/{ticker}")
+    public String ratios(@PathVariable String ticker)
     {
-        ratios.setRatios(iexApiCalls.getFinancials().getBody().getFinancials()[0], iexApiCalls.getKeyStats().getBody());
+        ratios.setRatios(iexApiCalls.getFinancials(ticker).getBody().getFinancials()[0], iexApiCalls.getKeyStats(ticker).getBody());
         return ratios.getRatios().toString();
     }
 
     @RequestMapping(value="/all")
     public String all()
     {
-        ratios.setRatios(iexApiCalls.getFinancials().getBody().getFinancials()[0], iexApiCalls.getKeyStats().getBody());
-        return iexApiCalls.getFinancials().getBody().getFinancials()[0].toString() + ratios.getRatios().toString();
+        List<String> metrics = new ArrayList<>();
+
+        for(SymbolObjectResponse ticker : iexApiCalls.getTickers().getBody())
+        {
+            System.err.println("*******"+ ticker.getSymbol());
+            ratios.setRatios(iexApiCalls.getFinancials(ticker.getSymbol()).getBody().getFinancials()[0], iexApiCalls.getKeyStats(ticker.getSymbol()).getBody());
+            metrics.add(iexApiCalls.getFinancials(ticker.getSymbol()).getBody().getFinancials()[0].toString() + ratios.getRatios().toString());
+        }
+
+        return metrics.toString();
     }
 }
 

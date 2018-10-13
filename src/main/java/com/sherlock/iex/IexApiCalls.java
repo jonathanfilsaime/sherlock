@@ -11,16 +11,16 @@ public class IexApiCalls {
     private final String URL_FINANCIAL = "https://api.iextrading.com/1.0/stock/all";
     private final String URL_SYMBOL = "https://api.iextrading.com/1.0/ref-data/symbols";
 
-    public ResponseEntity<FinancialDataObject> getFinancials()
+    public ResponseEntity<FinancialDataObject> getFinancials(String ticker)
     {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForEntity("https://api.iextrading.com/1.0/stock/tsla/financials?period=annual", FinancialDataObject.class);
+        return restTemplate.getForEntity("https://api.iextrading.com/1.0/stock/"+ticker+"/financials?period=annual", FinancialDataObject.class);
     }
 
-    public ResponseEntity<KeyStatsObject> getKeyStats()
+    public ResponseEntity<KeyStatsObject> getKeyStats(String ticker)
     {
         RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForEntity("https://api.iextrading.com/1.0/stock/tsla/stats", KeyStatsObject.class);
+        return restTemplate.getForEntity("https://api.iextrading.com/1.0/stock/"+ticker+"/stats", KeyStatsObject.class);
     }
 
     public ResponseEntity<SymbolObjectResponse[]> getTickers()
