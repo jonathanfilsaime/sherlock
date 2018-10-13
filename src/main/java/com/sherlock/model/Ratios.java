@@ -42,7 +42,7 @@ public class Ratios {
 
     private void setMarketcap(KeyStatsObject keyStatsObject)
     {
-        marketcap = keyStatsObject.getMarketcap();
+        marketcap = new BigDecimal(keyStatsObject.getMarketcap());
     }
 
     public BigDecimal getDividendRate() {
@@ -50,7 +50,10 @@ public class Ratios {
     }
 
     public void setDividendRate(KeyStatsObject keyStatsObject) {
-        this.dividendRate = keyStatsObject.getDividendRate();
+        if(keyStatsObject.getDividendRate() != null && !keyStatsObject.getDividendRate().equals("NaN"))
+        {
+            this.dividendRate = new BigDecimal(keyStatsObject.getDividendRate());
+        }
     }
 
     public BigDecimal getDividendYield() {
@@ -58,7 +61,10 @@ public class Ratios {
     }
 
     public void setDividendYield(KeyStatsObject keyStatsObject) {
-        this.dividendYield = keyStatsObject.getDividendYield();
+        if(keyStatsObject.getDividendYield() != null && !keyStatsObject.getDividendYield().equals("NaN"))
+        {
+            this.dividendYield = new BigDecimal(keyStatsObject.getDividendYield());
+        }
     }
 
     public BigDecimal getCashTrailingTwelveMonths() {
@@ -66,7 +72,10 @@ public class Ratios {
     }
 
     public void setCashTrailingTwelveMonths(KeyStatsObject keyStatsObject) {
-        this.cashTrailingTwelveMonths = keyStatsObject.getCash();
+        if(keyStatsObject.getCash() != null && !keyStatsObject.getCash().equals("NaN"))
+        {
+            this.cashTrailingTwelveMonths = new BigDecimal(keyStatsObject.getCash());
+        }
     }
 
     public BigDecimal getDebtTrailingTwelveMonths() {
@@ -74,7 +83,10 @@ public class Ratios {
     }
 
     public void setDebtTrailingTwelveMonths(KeyStatsObject keyStatsObject) {
-        this.debtTrailingTwelveMonths = keyStatsObject.getDebt();
+        if(keyStatsObject.getDebt() != null && !keyStatsObject.getDebt().equals("NaN"))
+        {
+            this.debtTrailingTwelveMonths = new BigDecimal(keyStatsObject.getDebt());
+        }
     }
 
     public BigDecimal getRevenuePerShareTrailingTwelveMonths() {
@@ -82,7 +94,11 @@ public class Ratios {
     }
 
     public void setRevenuePerShareTrailingTwelveMonths(KeyStatsObject keyStatsObject) {
-        this.revenuePerShareTrailingTwelveMonths = keyStatsObject.getRevenuePerShare();
+        System.err.println("-------->"+keyStatsObject.getRevenuePerShare()+"##");
+        if(keyStatsObject.getRevenuePerShare() != null && !keyStatsObject.getRevenuePerShare().equals("NaN"))
+        {
+            this.revenuePerShareTrailingTwelveMonths = new BigDecimal(keyStatsObject.getRevenuePerShare());
+        }
     }
 
     public BigDecimal getRevenuePerEmployeeTrailingTwelveMonths() {
@@ -90,7 +106,10 @@ public class Ratios {
     }
 
     public void setRevenuePerEmployeeTrailingTwelveMonths(KeyStatsObject keyStatsObject) {
-        this.revenuePerEmployeeTrailingTwelveMonths = keyStatsObject.getRevenuePerEmployee();
+        if(keyStatsObject.getRevenuePerEmployee() != null && !keyStatsObject.getRevenuePerEmployee().equals("NaN"))
+        {
+            this.revenuePerEmployeeTrailingTwelveMonths = new BigDecimal(keyStatsObject.getRevenuePerEmployee());
+        }
     }
 
     public BigDecimal getReturnOnAssetsTrailingTwelveMonths() {
@@ -98,7 +117,10 @@ public class Ratios {
     }
 
     public void setReturnOnAssetsTrailingTwelveMonths(KeyStatsObject keyStatsObject) {
-        this.returnOnAssetsTrailingTwelveMonths = keyStatsObject.getReturnOnAssets();
+        if(keyStatsObject.getReturnOnAssets() != null && !keyStatsObject.getReturnOnAssets().equals("NaN"))
+        {
+            this.returnOnAssetsTrailingTwelveMonths = new BigDecimal(keyStatsObject.getReturnOnAssets());
+        }
     }
 
     public BigDecimal getReturnOnCapitalTrailingTwelveMonths() {
@@ -106,7 +128,10 @@ public class Ratios {
     }
 
     public void setReturnOnCapitalTrailingTwelveMonths(KeyStatsObject keyStatsObject) {
-        this.returnOnCapitalTrailingTwelveMonths = keyStatsObject.getReturnOnCapital();
+        if(keyStatsObject.getReturnOnCapital() != null && !keyStatsObject.getReturnOnCapital().equals("NaN"))
+        {
+            this.returnOnCapitalTrailingTwelveMonths = new BigDecimal(keyStatsObject.getReturnOnCapital());
+        }
     }
 
     public BigDecimal getProfitMargin() {
@@ -114,7 +139,10 @@ public class Ratios {
     }
 
     public void setProfitMargin(KeyStatsObject keyStatsObject) {
-        this.profitMargin = keyStatsObject.getProfitMargin();
+        if(keyStatsObject.getProfitMargin() != null && !keyStatsObject.getProfitMargin().equals("NaN"))
+        {
+            this.profitMargin = new BigDecimal(keyStatsObject.getProfitMargin());
+        }
     }
 
     public BigDecimal getPriceToSales() {
@@ -122,7 +150,10 @@ public class Ratios {
     }
 
     public void setPriceToSales(KeyStatsObject keyStatsObject) {
-        this.priceToSales = keyStatsObject.getPriceToSales();
+        if(keyStatsObject.getPriceToSales() != null && !keyStatsObject.getPriceToSales().equals("NaN"))
+        {
+            this.priceToSales = new BigDecimal(keyStatsObject.getPriceToSales());
+        }
     }
 
     public BigDecimal getPriceToBook() {
@@ -130,7 +161,10 @@ public class Ratios {
     }
 
     public void setPriceToBook(KeyStatsObject keyStatsObject) {
-        this.priceToBook = keyStatsObject.getPriceToBook();
+        if(keyStatsObject.getPriceToBook() != null && !keyStatsObject.getPriceToBook().equals("NaN"))
+        {
+            this.priceToBook = new BigDecimal(keyStatsObject.getPriceToBook());
+        }
     }
 
 
