@@ -1,12 +1,11 @@
 package com.sherlock.controllers;
 
+import com.sherlock.computation.ResponseCreator;
 import com.sherlock.iex.IexApiCalls;
 import com.sherlock.model.FinancialDataObject;
-import com.sherlock.model.KeyStatsObject;
-import com.sherlock.model.Ratios;
+import com.sherlock.model.ResponseObject;
 import com.sherlock.model.SymbolObjectResponse;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,54 +16,30 @@ import java.util.List;
 @RestController
 public class Controller {
 
-    IexApiCalls iexApiCalls = new IexApiCalls();
-    Ratios ratios = new Ratios();
-
-    @RequestMapping(path="/financials/{ticker}")
-    public String financials(@PathVariable String ticker)
+    @RequestMapping(path="/stock/{ticker}", produces = "application/json")
+    public String stock(@PathVariable String ticker)
     {
-        ResponseEntity<FinancialDataObject> value = iexApiCalls.getFinancials(ticker);
-        System.err.println(value.getBody());
-        if(value.getBody().getFinancials() != null)
-        {
-            return iexApiCalls.getFinancials(ticker).getBody().getFinancials()[0].toString();
-        }
-        return "nothing there mate";
+        ResponseCreator responseCreator = new ResponseCreator();
+        ResponseObject value = responseCreator.create(ticker);
+        return (value != null) ? value.toString() : "nothing Here mate";
     }
 
-    @RequestMapping(path="/keystats/{ticker}")
-    public String keyStats(@PathVariable String ticker)
-    {
-        return iexApiCalls.getKeyStats(ticker).getBody().toString();
-    }
-
-    @RequestMapping(path="/ratios/{ticker}")
-    public String ratios(@PathVariable String ticker)
-    {
-        ratios.setRatios(iexApiCalls.getFinancials(ticker).getBody().getFinancials()[0], iexApiCalls.getKeyStats(ticker).getBody());
-        return ratios.getRatios().toString();
-    }
-
-    @RequestMapping(path="/object/{ticker}")
-    public String object(@PathVariable String ticker)
-    {
-        return ratios(ticker) + financials(ticker);
-    }
-
-    @RequestMapping(value="/all")
+    @RequestMapping(value="/all", produces = "application/json")
     public String all()
     {
         List<String> metrics = new ArrayList<>();
-
+        IexApiCalls iexApiCalls = new IexApiCalls();
         for(SymbolObjectResponse ticker : iexApiCalls.getTickers().getBody())
         {
             System.err.println("*******"+ ticker.getSymbol());
-            ResponseEntity<FinancialDataObject> value = iexApiCalls.getFinancials(ticker.getSymbol());
-            ResponseEntity<KeyStatsObject> keyStatsObject = iexApiCalls.getKeyStats(ticker.getSymbol());
-            if(value.getBody().getFinancials() != null && keyStatsObject != null)
+
+            ResponseCreator responseCreator = new ResponseCreator();
+            ResponseObject value = responseCreator.create(ticker.getSymbol());
+
+            if(value != null)
             {
-                ratios.setRatios(value.getBody().getFinancials()[0], keyStatsObject.getBody());
-                metrics.add(value.getBody().getFinancials()[0].toString() + ratios.getRatios().toString());
+                System.err.println(value.toString());
+                metrics.add(value.toString());
             }
             continue;
         }

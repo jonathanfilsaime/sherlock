@@ -20,7 +20,6 @@ public class IexApiCalls {
     public ResponseEntity<KeyStatsObject> getKeyStats(String ticker)
     {
         RestTemplate restTemplate = new RestTemplate();
-        System.err.println("got here mate");
         ResponseEntity<KeyStatsObject> responseEntity = restTemplate.getForEntity("https://api.iextrading.com/1.0/stock/"+ticker+"/stats", KeyStatsObject.class);
         if(responseEntity.hasBody()){
             return responseEntity;

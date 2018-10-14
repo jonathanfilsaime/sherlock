@@ -4,31 +4,29 @@ package com.sherlock.model;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @NoArgsConstructor
 public class Financials {
 
     private String reportDate;
-    private BigDecimal grossProfit;
-    private BigDecimal costOfRevenue;
-    private BigDecimal operatingRevenue;
-    private BigDecimal totalRevenue;
-    private BigDecimal operatingIncome;
-    private BigDecimal netIncome;
-    private BigDecimal researchAndDevelopment;
-    private BigDecimal operatingExpense;
-    private BigDecimal currentAssets;
-    private BigDecimal totalAssets;
-    private BigDecimal totalLiabilities;
-    private BigDecimal currentCash;
-    private BigDecimal currentDebt;
-    private BigDecimal totalCash;
-    private BigDecimal totalDebt;
-    private BigDecimal shareholderEquity;
-    private BigDecimal cashChange;
-    private BigDecimal cashFlow;
+    private String grossProfit;
+    private String costOfRevenue;
+    private String operatingRevenue;
+    private String totalRevenue;
+    private String operatingIncome;
+    private String netIncome;
+    private String researchAndDevelopment;
+    private String operatingExpense;
+    private String currentAssets;
+    private String totalAssets;
+    private String totalLiabilities;
+    private String currentCash;
+    private String currentDebt;
+    private String totalCash;
+    private String totalDebt;
+    private String shareholderEquity;
+    private String cashChange;
+    private String cashFlow;
     private String operatingGainsLosses;
 
 
