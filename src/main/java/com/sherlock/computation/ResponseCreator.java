@@ -9,6 +9,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 
+/**
+ * This class is a data extractor and manipulator
+ * it makes the call 2 calls iex API and one for
+ * 1-to retrieve financials
+ * 2-to retrieve key stats
+ */
 public class ResponseCreator {
 
     public ResponseObject create(String ticker)
@@ -21,15 +27,26 @@ public class ResponseCreator {
         if(Validation.validateFinancialDataObject(financialDataObjectArray) && Validation.validateKeyStatsObject(keyStatsObject))
         {
             ratios.setRatios(financialDataObjectArray.getBody().getFinancials()[0]);
-            return map(financialDataObjectArray.getBody().getFinancials()[0], keyStatsObject.getBody(), ratios);
+            return map(financialDataObjectArray.getBody().getFinancials()[0], keyStatsObject.getBody(), ratios, ticker);
         }
         return null;
     }
 
-    private ResponseObject map(Financials financials, KeyStatsObject keyStatsObject, Ratios ratios)
+    /**
+     * This method maps the response from the 2 iex API calls
+     * to our response object
+     * @param financials
+     * @param keyStatsObject
+     * @param ratios
+     * @param ticker
+     * @return
+     */
+    private ResponseObject map(Financials financials, KeyStatsObject keyStatsObject, Ratios ratios, String ticker)
     {
         ResponseObject responseObject = new ResponseObject();
         responseObject.setReportDate(financials.getReportDate());
+        responseObject.setCompanyName(keyStatsObject.getCompanyName());
+        responseObject.setTickerSymbol(ticker);
         responseObject.setGrossProfit(Validation.isNumeric(financials.getGrossProfit()) ? new BigDecimal(financials.getGrossProfit()) : BigDecimal.ZERO);
         responseObject.setCostOfRevenue(Validation.isNumeric(financials.getCostOfRevenue()) ? new BigDecimal(financials.getCostOfRevenue()) : BigDecimal.ZERO);
         responseObject.setOperatingRevenue(Validation.isNumeric(financials.getOperatingRevenue()) ? new BigDecimal(financials.getOperatingRevenue()) : BigDecimal.ZERO);

@@ -2,10 +2,10 @@ package com.sherlock.controllers;
 
 import com.sherlock.computation.ResponseCreator;
 import com.sherlock.iex.IexApiCalls;
-import com.sherlock.model.FinancialDataObject;
 import com.sherlock.model.ResponseObject;
 import com.sherlock.model.SymbolObjectResponse;
-import org.springframework.http.ResponseEntity;
+import com.sherlock.repository.MetricRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +15,15 @@ import java.util.List;
 
 @RestController
 public class Controller {
+
+    @Autowired
+    MetricRepository repository;
+
+    @RequestMapping(path="/findall")
+    public Iterable<ResponseObject> findAll()
+    {
+        return repository.findAll();
+    }
 
     @RequestMapping(path="/stock/{ticker}", produces = "application/json")
     public String stock(@PathVariable String ticker)
@@ -29,8 +38,12 @@ public class Controller {
     {
         List<String> metrics = new ArrayList<>();
         IexApiCalls iexApiCalls = new IexApiCalls();
+
+        int count = 0;
+
         for(SymbolObjectResponse ticker : iexApiCalls.getTickers().getBody())
         {
+            count++;
             System.err.println("*******"+ ticker.getSymbol());
 
             ResponseCreator responseCreator = new ResponseCreator();
@@ -40,8 +53,16 @@ public class Controller {
             {
                 System.err.println(value.toString());
                 metrics.add(value.toString());
+                repository.save(value);
+
+                if(count > 20)
+                {
+                    break;
+                }
             }
             continue;
+
+
         }
 
         return metrics.toString();

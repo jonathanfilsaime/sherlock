@@ -18,6 +18,8 @@ public class ResponseObject {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String reportDate;
+    private String companyName;
+    private String tickerSymbol;
     private BigDecimal grossProfit;
     private BigDecimal costOfRevenue;
     private BigDecimal operatingRevenue;
