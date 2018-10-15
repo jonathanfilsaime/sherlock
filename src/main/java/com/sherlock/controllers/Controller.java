@@ -19,6 +19,12 @@ public class Controller {
     @Autowired
     MetricRepository repository;
 
+    @RequestMapping(path ="/test")
+    public Iterable<ResponseObject> test()
+    {
+        return repository.findAllStocks();
+    }
+
     @RequestMapping(path="/findall")
     public Iterable<ResponseObject> findAll()
     {
@@ -33,7 +39,7 @@ public class Controller {
         return (value != null) ? value.toString() : "nothing Here mate";
     }
 
-    @RequestMapping(value="/all", produces = "application/json")
+    @RequestMapping(value="/load", produces = "application/json")
     public String all()
     {
         List<String> metrics = new ArrayList<>();
