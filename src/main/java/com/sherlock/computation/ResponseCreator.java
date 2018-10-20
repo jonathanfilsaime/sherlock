@@ -74,7 +74,7 @@ public class ResponseCreator {
         responseObject.setDEBT_TRAILING_TWELVE_MONTHS(Validation.isNumeric(keyStatsObject.getDebt()) ? new BigDecimal(keyStatsObject.getDebt()) : BigDecimal.ZERO);
         responseObject.setREVENUE_PER_SHARE_TRAILING_TWELVE_MONTHS(Validation.isNumeric(keyStatsObject.getRevenuePerShare()) ? new BigDecimal(keyStatsObject.getRevenuePerShare()) : BigDecimal.ZERO);
         responseObject.setREVENUE_PER_EMPLOYEE_TRAILING_TWELVE_MONTHS(Validation.isNumeric(keyStatsObject.getRevenuePerEmployee()) ? new BigDecimal(keyStatsObject.getRevenuePerEmployee()) : BigDecimal.ZERO);
-        responseObject.setRETURN_ON_ASSETS_RATIO(Validation.isNumeric(keyStatsObject.getReturnOnAssets()) ? new BigDecimal(keyStatsObject.getReturnOnAssets()) : BigDecimal.ZERO);
+        responseObject.setRETURN_ON_ASSETS_TRAILING_TWELVE_MONTHS(Validation.isNumeric(keyStatsObject.getReturnOnAssets()) ? new BigDecimal(keyStatsObject.getReturnOnAssets()) : BigDecimal.ZERO);
         responseObject.setRETURN_ON_CAPITAL_TRAILING_TWELVE_MONTHS(Validation.isNumeric(keyStatsObject.getReturnOnCapital()) ? new BigDecimal(keyStatsObject.getReturnOnCapital()) : BigDecimal.ZERO);
         responseObject.setPROFIT_MARGIN(Validation.isNumeric(keyStatsObject.getProfitMargin()) ? new BigDecimal(keyStatsObject.getProfitMargin()) : BigDecimal.ZERO);
         responseObject.setPRICE_TO_SALES(Validation.isNumeric(keyStatsObject.getPriceToSales()) ? new BigDecimal(keyStatsObject.getPriceToSales()) : BigDecimal.ZERO);

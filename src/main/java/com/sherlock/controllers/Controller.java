@@ -1,5 +1,6 @@
 package com.sherlock.controllers;
 
+import com.sherlock.computation.QueryParser;
 import com.sherlock.computation.ResponseCreator;
 import com.sherlock.iex.IexApiCalls;
 import com.sherlock.model.ResponseObject;
@@ -19,10 +20,15 @@ public class Controller {
     @Autowired
     MetricRepository repository;
 
+
     @RequestMapping(path ="/test")
     public Iterable<ResponseObject> test()
     {
-        return repository.findAllStocks();
+        QueryParser qp = new QueryParser();
+        System.err.println(qp.parse("Find:Top10Stocks Where:OPERATING_REVENUE is:greater Than:'10000000000'"));
+//        return repository.findAllStocks(qp.parse("Find:Top10Stocks Where:OPERATING_REVENUE is:greater Than:'10000000000'"));
+        return repository.findAllStocks("10000000");
+
     }
 
     @RequestMapping(path="/findall")
