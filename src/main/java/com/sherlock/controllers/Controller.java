@@ -3,6 +3,7 @@ package com.sherlock.controllers;
 import com.sherlock.computation.QueryParser;
 import com.sherlock.computation.ResponseCreator;
 import com.sherlock.iex.IexApiCalls;
+import com.sherlock.jdbc.ResponseObjectJdbcRepository;
 import com.sherlock.model.ResponseObject;
 import com.sherlock.model.SymbolObjectResponse;
 import com.sherlock.repository.MetricRepository;
@@ -20,6 +21,9 @@ public class Controller {
     @Autowired
     MetricRepository repository;
 
+    @Autowired
+    ResponseObjectJdbcRepository responseObjectJdbcRepository;
+
 
     @RequestMapping(path ="/test")
     public Iterable<ResponseObject> test()
@@ -29,6 +33,22 @@ public class Controller {
 //        return repository.findAllStocks(qp.parse("Find:Top10Stocks Where:OPERATING_REVENUE is:greater Than:'10000000000'"));
         return repository.findAllStocks("10000000");
 
+    }
+
+    @RequestMapping(path="/repo")
+    public Iterable<ResponseObject> repo()
+    {
+        QueryParser qp = new QueryParser();
+        System.err.println(qp.parse("Find:Top50Stocks Where:OPERATING_REVENUE is:less Than:'50000000'"));
+        return responseObjectJdbcRepository.query(qp.parse("Find:Top50Stocks Where:OPERATING_REVENUE is:less Than:'50000000'"));
+    }
+
+    @RequestMapping(path="/repo1")
+    public Iterable<ResponseObject> repo1()
+    {
+        QueryParser qp = new QueryParser();
+        System.err.println(qp.parse("Find:Top10Stocks Where:NET_INCOME is:greater Than:'1000000000'"));
+        return responseObjectJdbcRepository.query(qp.parse("Find:Top10Stocks Where:NET_INCOME is:greater Than:'1000000000'"));
     }
 
     @RequestMapping(path="/findall")
