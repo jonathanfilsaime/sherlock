@@ -5,7 +5,6 @@ import com.sherlock.model.FinancialDataObject;
 import com.sherlock.model.Financials;
 import com.sherlock.model.KeyStatsObject;
 import com.sherlock.model.ResponseObject;
-import org.springframework.http.ResponseEntity;
 
 import java.math.BigDecimal;
 
@@ -20,16 +19,14 @@ public class ResponseCreator {
     public ResponseObject create(String ticker)
     {
         IexApiCalls iexApiCalls = new IexApiCalls();
-        ResponseEntity<FinancialDataObject> financialDataObjectArray = iexApiCalls.getFinancials(ticker);
-        ResponseEntity<KeyStatsObject> keyStatsObject = iexApiCalls.getKeyStats(ticker);
-        Ratios ratios = new Ratios();
+        FinancialDataObject financialDataObjectArray = iexApiCalls.getFinancials(ticker);
+        KeyStatsObject keyStatsObject = iexApiCalls.getKeyStats(ticker);
 
-        if(Validation.validateFinancialDataObject(financialDataObjectArray) && Validation.validateKeyStatsObject(keyStatsObject))
-        {
-            ratios.setRatios(financialDataObjectArray.getBody().getFinancials()[0]);
-            return map(financialDataObjectArray.getBody().getFinancials()[0], keyStatsObject.getBody(), ratios, ticker);
-        }
-        return null;
+        Ratios ratios = new Ratios();
+        ratios.setRatios(financialDataObjectArray.getFinancials()[0]);
+
+        return map(financialDataObjectArray.getFinancials()[0], keyStatsObject, ratios, ticker);
+
     }
 
     /**

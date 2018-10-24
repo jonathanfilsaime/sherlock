@@ -56,7 +56,7 @@ public class QueryParser {
             } else if (((i == 2) || (i > 2 && i % 3 == 2))) {
                 map.put(i, strings[i].substring(3));
             } else if (i > 2 && i % 3 == 0) {
-                map.put(i, strings[i].substring(5));
+                map.put(i, strings[i].substring(5).replaceAll("[$,]",""));
             }
             else {
             }

@@ -8,8 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface MetricRepository extends CrudRepository<ResponseObject, Long> {
 
-
-
     Iterable<ResponseObject> findAll();
 
     @Modifying
