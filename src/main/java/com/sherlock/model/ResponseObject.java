@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class ResponseObject {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ID;
     private String REPORT_DATE;
     private String COMPANY_NAME;
