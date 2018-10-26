@@ -6,21 +6,25 @@ import com.sherlock.iex.IexApiCalls;
 import com.sherlock.jdbc.ResponseObjectJdbcRepository;
 import com.sherlock.model.ResponseObject;
 import com.sherlock.model.SymbolObjectResponse;
-import com.sherlock.repository.MetricRepository;
+import com.sherlock.repository.ResponseObjectCrudRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
 public class Controller {
 
+    Logger logger = LoggerFactory.getLogger(Controller.class.getName());
+
     @Autowired
-    MetricRepository repository;
+    ResponseObjectCrudRepository responseObjectCrudRepository;
 
     @Autowired
     ResponseObjectJdbcRepository responseObjectJdbcRepository;
@@ -29,33 +33,42 @@ public class Controller {
     public Iterable<ResponseObject> repo1(@RequestParam(value="search", required=true) String sql)
     {
         QueryParser qp = new QueryParser();
-        System.err.println(qp.parse(sql));
+        logger.info(qp.parse(sql));
         return responseObjectJdbcRepository.query(qp.parse(sql));
     }
 
     @RequestMapping(value="/load", produces = "application/json")
-    public String all()
+    public Iterator<ResponseObject> all()
     {
-        List<String> metrics = new ArrayList<>();
         IexApiCalls iexApiCalls = new IexApiCalls();
+        SymbolObjectResponse[] tickerSymbols = iexApiCalls.getTickers().getBody();
 
-        for(SymbolObjectResponse ticker : iexApiCalls.getTickers().getBody())
+//        int count = 0;
+
+        for(SymbolObjectResponse tickerSymbol : tickerSymbols)
         {
-            System.err.println("*******"+ ticker.getSymbol());
+            logger.info("ticker symbol: "+ tickerSymbol.getSymbol());
 
             ResponseCreator responseCreator = new ResponseCreator();
-            ResponseObject value = responseCreator.create(ticker.getSymbol());
+            ResponseObject value = responseCreator.create(tickerSymbol.getSymbol());
 
             if(value != null && value.getREPORT_DATE() != "-1")
             {
-                System.err.println(value.toString());
-                metrics.add(value.toString());
-                repository.save(value);
+                logger.info("values: " + value.toString());
+                responseObjectCrudRepository.save(value);
             }
-            continue;
+//            count++;
+//
+//            if(count > 20)
+//            {
+//                break;
+//            }
+
         }
 
-        return metrics.toString();
+        logger.info("number fo rows: " + String.valueOf(responseObjectCrudRepository.count()));
+
+        return responseObjectCrudRepository.findAll().iterator();
     }
 }
 
