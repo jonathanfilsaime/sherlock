@@ -2,6 +2,8 @@ package com.sherlock.jdbc;
 
 
 import com.sherlock.model.ResponseObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.RowMapper;
 
 
@@ -9,9 +11,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class ResponseObjectRowMapper implements RowMapper<ResponseObject> {
+
+    Logger logger = LoggerFactory.getLogger(ResponseObjectRowMapper.class.getName());
+
     @Override
     public ResponseObject mapRow(ResultSet rs, int i) throws SQLException {
+
+
         ResponseObject responseObject = new ResponseObject();
+
+
+
         responseObject.setREPORT_DATE(rs.getString("REPORT_DATE"));
         responseObject.setCOMPANY_NAME(rs.getString("COMPANY_NAME"));
         responseObject.setTICKER_SYMBOL(rs.getString("TICKER_SYMBOL"));
@@ -59,6 +69,8 @@ public class ResponseObjectRowMapper implements RowMapper<ResponseObject> {
         responseObject.setOPERATING_MARGIN_RATIO(rs.getBigDecimal("OPERATING_MARGIN_RATIO"));
         responseObject.setRETURN_ON_ASSETS_RATIO(rs.getBigDecimal("RETURN_ON_ASSETS_RATIO"));
         responseObject.setRETURN_ON_EQUITY_RATIO(rs.getBigDecimal("RETURN_ON_EQUITY_RATIO"));
+
+        logger.info("response object return from sherlockDB: " +responseObject.toString());
 
         return responseObject;
     }

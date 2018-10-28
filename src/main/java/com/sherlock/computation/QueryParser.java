@@ -68,7 +68,7 @@ public class QueryParser {
     private String queryStringBuilder(Map map) {
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("SELECT * FROM FINANCIAL_DATA WHERE");
+        stringBuilder.append("SELECT * FROM financial_data WHERE");
 
         for (int i = 0; i < map.size(); i++) {
             if (i == 1) {

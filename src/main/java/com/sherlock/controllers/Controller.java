@@ -10,6 +10,7 @@ import com.sherlock.repository.ResponseObjectCrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +30,18 @@ public class Controller {
     @Autowired
     ResponseObjectJdbcRepository responseObjectJdbcRepository;
 
-    @RequestMapping(path="/search")
-    public Iterable<ResponseObject> repo1(@RequestParam(value="search", required=true) String sql)
+    @RequestMapping(path="/search/param")
+    public Iterable<ResponseObject> searchParam(@RequestParam(value="search", required=true) String sql)
     {
         QueryParser qp = new QueryParser();
         logger.info(qp.parse(sql));
         return responseObjectJdbcRepository.query(qp.parse(sql));
+    }
+
+    @RequestMapping(path="/search")
+    public void search()
+    {
+
     }
 
     @RequestMapping(value="/load", produces = "application/json")
@@ -43,7 +50,7 @@ public class Controller {
         IexApiCalls iexApiCalls = new IexApiCalls();
         SymbolObjectResponse[] tickerSymbols = iexApiCalls.getTickers().getBody();
 
-//        int count = 0;
+        int count = 0;
 
         for(SymbolObjectResponse tickerSymbol : tickerSymbols)
         {
@@ -57,12 +64,12 @@ public class Controller {
                 logger.info("values: " + value.toString());
                 responseObjectCrudRepository.save(value);
             }
-//            count++;
-//
-//            if(count > 20)
-//            {
-//                break;
-//            }
+            count++;
+
+            if(count > 30)
+            {
+                break;
+            }
 
         }
 
