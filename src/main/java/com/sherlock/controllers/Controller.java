@@ -4,16 +4,14 @@ import com.sherlock.computation.QueryParser;
 import com.sherlock.computation.ResponseCreator;
 import com.sherlock.iex.IexApiCalls;
 import com.sherlock.jdbc.ResponseObjectJdbcRepository;
+import com.sherlock.model.RequestObject;
 import com.sherlock.model.ResponseObject;
 import com.sherlock.model.SymbolObjectResponse;
 import com.sherlock.repository.ResponseObjectCrudRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -38,10 +36,11 @@ public class Controller {
         return responseObjectJdbcRepository.query(qp.parse(sql));
     }
 
-    @RequestMapping(path="/search")
-    public void search()
+    @RequestMapping(path="/search", method = RequestMethod.POST, consumes="application/json")
+    public void search(@RequestBody RequestObject requestObject)
     {
-
+        QueryParser qp = new QueryParser();
+        System.err.println("requestObject" + qp.parseRequest(requestObject));
     }
 
     @RequestMapping(value="/load", produces = "application/json")
