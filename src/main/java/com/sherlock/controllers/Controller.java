@@ -8,14 +8,14 @@ import com.sherlock.model.RequestObject;
 import com.sherlock.model.ResponseObject;
 import com.sherlock.model.SymbolObjectResponse;
 import com.sherlock.repository.ResponseObjectCrudRepository;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 @RestController
 public class Controller {
@@ -28,7 +28,14 @@ public class Controller {
     @Autowired
     ResponseObjectJdbcRepository responseObjectJdbcRepository;
 
-    @RequestMapping(path="/search/param")
+    /**
+     * this resource allows the SHERLOCK database to be queried provided
+     * that the string value of the search param is correctly formatted
+     * @param sql
+     * @return a JSON ResponseObject
+     */
+    @ApiOperation(value = "Returns rows which meets the conditions passed in", response = ResponseObject.class)
+    @RequestMapping(path="/search/param", method = RequestMethod.GET, produces = "application/json")
     public Iterable<ResponseObject> searchParam(@RequestParam(value="search", required=true) String sql)
     {
         QueryParser qp = new QueryParser();
@@ -36,20 +43,30 @@ public class Controller {
         return responseObjectJdbcRepository.query(qp.parse(sql));
     }
 
-    @RequestMapping(path="/search", method = RequestMethod.POST, consumes="application/json")
+    /**
+     * this resource allows the SHERLOCK database to be queried provided the
+     * JSON object in the body is correctly formatted
+     * @param requestObject
+     */
+    @ApiOperation(value = "Returns rows which meets the conditions passed in", response = ResponseObject.class)
+    @RequestMapping(path="/search", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
     public void search(@RequestBody RequestObject requestObject)
     {
         QueryParser qp = new QueryParser();
         System.err.println("requestObject" + qp.parseRequest(requestObject));
     }
 
-    @RequestMapping(value="/load", produces = "application/json")
+    /**
+     * this resource is only to be used to populate the SHERLOCK database
+     * it is not public and should not be publicly exposed on Open Cortex
+     * @return a JSON ResponseObject
+     */
+    @ApiIgnore
+//    @RequestMapping(value="/load", produces = "application/json")
     public Iterator<ResponseObject> all()
     {
         IexApiCalls iexApiCalls = new IexApiCalls();
         SymbolObjectResponse[] tickerSymbols = iexApiCalls.getTickers().getBody();
-
-        int count = 0;
 
         for(SymbolObjectResponse tickerSymbol : tickerSymbols)
         {
@@ -62,12 +79,6 @@ public class Controller {
             {
                 logger.info("values: " + value.toString());
                 responseObjectCrudRepository.save(value);
-            }
-            count++;
-
-            if(count > 30)
-            {
-                break;
             }
 
         }

@@ -5,6 +5,7 @@ import com.sherlock.model.FinancialDataObject;
 import com.sherlock.model.Financials;
 import com.sherlock.model.KeyStatsObject;
 import com.sherlock.model.ResponseObject;
+import com.sherlock.validation.Validation;
 
 import java.math.BigDecimal;
 
@@ -36,7 +37,7 @@ public class ResponseCreator {
      * @param keyStatsObject
      * @param ratios
      * @param ticker
-     * @return
+     * @return ResponseObject
      */
     private ResponseObject map(Financials financials, KeyStatsObject keyStatsObject, Ratios ratios, String ticker)
     {

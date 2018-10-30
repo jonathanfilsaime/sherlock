@@ -3,15 +3,31 @@ package com.sherlock.computation;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * {
+ * "find": "string" can only be the find values specified below,
+ *   "conditionRequestObjects":
+ *   [{
+ *       "where": "string" can only be the where values specified below,
+ *       "isGreater": "string" can only be true or false,
+ *       "amount": "string" example $1,000,000.00
+ *     }]
+ *
+ * }
+ */
 public class SearchValues {
 
     private List<String> values;
 
     public SearchValues(){
         this.values = new ArrayList<>();
+        //find: values
         values.add("TOP_10_STOCKS");
         values.add("TOP_50_STOCKS");
         values.add("TOP_100_STOCKS");
+
+        //where: values
         values.add("ALL_STOCKS");
         values.add("REPORT_DATE");
         values.add("COMPANY_NAME");

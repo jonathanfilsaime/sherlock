@@ -1,6 +1,6 @@
 package com.sherlock.iex;
 
-import com.sherlock.computation.Validation;
+import com.sherlock.validation.Validation;
 import com.sherlock.model.FinancialDataObject;
 import com.sherlock.model.Financials;
 import com.sherlock.model.KeyStatsObject;
@@ -8,6 +8,7 @@ import com.sherlock.model.SymbolObjectResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+//TODO move the buildEmptyFinancialDataObject() method to the exception handler
 public class IexApiCalls {
 
     private final String URL_FINANCIAL_START = "https://api.iextrading.com/1.0/stock/";
