@@ -58,7 +58,6 @@ public class Controller {
         logger.info("request object:" + requestObject);
         logger.info("request Object parse: " + qp.parseRequest(requestObject));
         return responseObjectJdbcRepository.query(qp.parseRequest(requestObject));
-
     }
 
     /**
@@ -76,7 +75,6 @@ public class Controller {
         for(SymbolObjectResponse tickerSymbol : tickerSymbols)
         {
             logger.info("ticker symbol: "+ tickerSymbol.getSymbol());
-
             ResponseCreator responseCreator = new ResponseCreator();
             ResponseObject value = responseCreator.create(tickerSymbol.getSymbol());
 
@@ -85,11 +83,9 @@ public class Controller {
                 logger.info("values: " + value.toString());
                 responseObjectCrudRepository.save(value);
             }
-
         }
 
         logger.info("number fo rows: " + String.valueOf(responseObjectCrudRepository.count()));
-
         return responseObjectCrudRepository.findAll().iterator();
     }
 }

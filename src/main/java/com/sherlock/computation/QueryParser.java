@@ -92,59 +92,59 @@ public class QueryParser {
             else {
             }
         }
-
         return map;
     }
 
     private String queryStringBuilder(Map map) {
 
-        if(Validation.validateWhereCondition(map))
+        if (Validation.validateWhereCondition(map))
         {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append("SELECT * FROM financial_data WHERE");
 
-        }
-
-        StringBuilder stringBuilder = new StringBuilder();
-
-        stringBuilder.append("SELECT * FROM financial_data WHERE");
-
-        for (int i = 0; i < map.size(); i++) {
-            if (i == 1) {
-                stringBuilder.append(" ");
-                stringBuilder.append(map.get(i));
-            }
-            if (i > 1 && i % 3 == 1) {
-                stringBuilder.append(" AND ");
-                stringBuilder.append(map.get(i));
-            }
-            if (i > 1 && i % 3 == 2) {
-                if (map.get(i).equals("greater") || map.get(i).equals("true") || map.get(i).equals("True")) {
-                    stringBuilder.append(" >");
+            for (int i = 0; i < map.size(); i++)
+            {
+                if (i == 1) {
+                    stringBuilder.append(" ");
+                    stringBuilder.append(map.get(i));
                 }
-                if (map.get(i).equals("less") || map.get(i).equals("false") || map.get(i).equals("False")) {
-                    stringBuilder.append(" <");
+                if (i > 1 && i % 3 == 1) {
+                    stringBuilder.append(" AND ");
+                    stringBuilder.append(map.get(i));
+                }
+                if (i > 1 && i % 3 == 2) {
+                    if (map.get(i).equals("greater") || map.get(i).equals("true") || map.get(i).equals("True")) {
+                        stringBuilder.append(" >");
+                    }
+                    if (map.get(i).equals("less") || map.get(i).equals("false") || map.get(i).equals("False")) {
+                        stringBuilder.append(" <");
+                    }
+                }
+                if (i > 2 && i % 3 == 0) {
+                    stringBuilder.append(" ");
+                    stringBuilder.append(map.get(i));
                 }
             }
-            if (i > 2 && i % 3 == 0) {
-                stringBuilder.append(" ");
-                stringBuilder.append(map.get(i));
+
+            if (map.get(0).equals("TOP_10_STOCKS")) {
+                stringBuilder.append(" LIMIT 10;");
             }
-        }
+            if (map.get(0).equals("TOP_50_STOCKS")) {
+                stringBuilder.append(" LIMIT 50;");
+            }
+            if (map.get(0).equals("TOP_100_STOCKS")) {
+                stringBuilder.append(" LIMIT 100;");
+            }
+            if (map.get(0).equals("ALL_STOCKS")) {
+                stringBuilder.append(";");
+            }
 
-        if (map.get(0).equals("TOP_10_STOCKS")) {
-            stringBuilder.append(" LIMIT 10;");
+            return stringBuilder.toString();
         }
-        if (map.get(0).equals("TOP_50_STOCKS")) {
-            stringBuilder.append(" LIMIT 50;");
+        else
+        {
+            throw new IncorrectQuerySyntaxException("Incorrect syntax" + map);
         }
-        if (map.get(0).equals("TOP_100_STOCKS")) {
-            stringBuilder.append(" LIMIT 100;");
-        }
-        if (map.get(0).equals("ALL_STOCKS")) {
-            stringBuilder.append(";");
-        }
-
-
-        return stringBuilder.toString();
     }
 }
 
