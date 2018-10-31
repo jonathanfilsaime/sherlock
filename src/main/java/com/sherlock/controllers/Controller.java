@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.validation.Valid;
 import java.util.Iterator;
 
 @RestController
@@ -39,7 +40,8 @@ public class Controller {
     public Iterable<ResponseObject> searchParam(@RequestParam(value="search", required=true) String sql)
     {
         QueryParser qp = new QueryParser();
-        logger.info(qp.parse(sql));
+        logger.info("sql string: " + sql);
+        logger.info("sql parse string: " + qp.parse(sql));
         return responseObjectJdbcRepository.query(qp.parse(sql));
     }
 
@@ -50,10 +52,13 @@ public class Controller {
      */
     @ApiOperation(value = "Returns rows which meets the conditions passed in", response = ResponseObject.class)
     @RequestMapping(path="/search", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
-    public void search(@RequestBody RequestObject requestObject)
+    public Iterable<ResponseObject> search(@Valid @RequestBody RequestObject requestObject)
     {
         QueryParser qp = new QueryParser();
-        System.err.println("requestObject" + qp.parseRequest(requestObject));
+        logger.info("request object:" + requestObject);
+        logger.info("request Object parse: " + qp.parseRequest(requestObject));
+        return responseObjectJdbcRepository.query(qp.parseRequest(requestObject));
+
     }
 
     /**

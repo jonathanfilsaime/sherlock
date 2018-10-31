@@ -17,10 +17,7 @@ public class ResponseObjectRowMapper implements RowMapper<ResponseObject> {
     @Override
     public ResponseObject mapRow(ResultSet rs, int i) throws SQLException {
 
-
         ResponseObject responseObject = new ResponseObject();
-
-
 
         responseObject.setREPORT_DATE(rs.getString("REPORT_DATE"));
         responseObject.setCOMPANY_NAME(rs.getString("COMPANY_NAME"));

@@ -12,7 +12,6 @@ public class ResponseObjectJdbcRepository {
     JdbcTemplate jdbcTemplate;
 
     public Iterable<ResponseObject> query(String sql) {
-        System.err.println("I got here mate");
         Iterable<ResponseObject> responseObjects = jdbcTemplate.query(sql, new ResponseObjectRowMapper());
         return responseObjects;
     }

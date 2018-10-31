@@ -1,13 +1,18 @@
 package com.sherlock.computation;
 
+import com.sherlock.exception.IncorrectQuerySyntaxException;
 import com.sherlock.model.ConditionRequestObject;
 import com.sherlock.model.RequestObject;
 import com.sherlock.validation.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class QueryParser {
+
+    Logger logger = LoggerFactory.getLogger(QueryParser.class.getName());
 
     /**
      * this method parse the query param passed in from the
@@ -17,14 +22,18 @@ public class QueryParser {
      */
     public String parse(String string) {
         String[] split = string.split("\\s+");
-        String sqlString = null;
 
-        if (Validation.validateLength(split) && Validation.validateSyntax(split)) {
-            sqlString = queryStringBuilder(createValueMap(split));
+        if (Validation.validateLength(split) && Validation.validateSyntax(split)
+                && Validation.validateWhereCondition(createValueMap(split))
+                && Validation.validateMapSize(createValueMap(split)))
+        {
+            logger.info(queryStringBuilder(createValueMap(split)));
+            return queryStringBuilder(createValueMap(split));
         }
-
-        System.err.println(sqlString);
-        return sqlString;
+        else
+        {
+            throw new IncorrectQuerySyntaxException("incorrect syntax");
+        }
     }
 
     /**
@@ -38,12 +47,17 @@ public class QueryParser {
         Map<Integer, String> map = createValueMapFromRequestObject(requestObject);
         if(Validation.validateMapSize(map) && Validation.validateWhereCondition(map))
         {
+            logger.info(queryStringBuilder(map));
             return queryStringBuilder(map);
         }
-        return null;
+        else
+        {
+            throw new IncorrectQuerySyntaxException("incorrect syntax");
+        }
     }
 
-    private Map<Integer, String> createValueMapFromRequestObject(RequestObject requestObject)
+    private Map<Integer, String>
+    createValueMapFromRequestObject(RequestObject requestObject)
     {
         Map<Integer, String> map = new HashMap<>();
         map.put(0, requestObject.getFind());
@@ -55,9 +69,9 @@ public class QueryParser {
             index++;
             map.put(index, condition.getIsGreater());
             index++;
-            map.put(index, condition.getAmount());
+            map.put(index, condition.getAmount().replaceFirst("^0+(?!$)", "").replaceAll("[$,]",""));
         }
-        System.err.println("inside map" + map.toString());
+        logger.info("createValueMapFromRequestObject: " + map.toString());
         return map;
     }
 
@@ -73,7 +87,7 @@ public class QueryParser {
             } else if (((i == 2) || (i > 2 && i % 3 == 2))) {
                 map.put(i, strings[i].substring(3));
             } else if (i > 2 && i % 3 == 0) {
-                map.put(i, strings[i].substring(5).replaceAll("[$,]",""));
+                map.put(i, strings[i].substring(5).replaceFirst("^0+(?!$)", "").replaceAll("[$,]",""));
             }
             else {
             }
@@ -83,6 +97,12 @@ public class QueryParser {
     }
 
     private String queryStringBuilder(Map map) {
+
+        if(Validation.validateWhereCondition(map))
+        {
+
+        }
+
         StringBuilder stringBuilder = new StringBuilder();
 
         stringBuilder.append("SELECT * FROM financial_data WHERE");

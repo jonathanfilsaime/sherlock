@@ -52,30 +52,23 @@ public class Validation {
         boolean value = false;
         SearchValues searchValues = new SearchValues();
 
-        if( map.get(0).equals("TOP_10_STOCKS") || map.get(0).equals("TOP_50_STOCKS") ||
-                map.get(0).equals("TOP_100_STOCKS") || map.get(0).equals("ALL_STOCKS"))
-        {
-            value = true;
-        }
-        else
-        {
-            return false;
-        }
-
         for(int i = 0; i < map.size(); i++)
         {
-            if(searchValues.getValues().contains(map.get(i)))
+            if(i == 0 && (map.get(0).equals("TOP_10_STOCKS") || map.get(0).equals("TOP_50_STOCKS") ||
+                    map.get(0).equals("TOP_100_STOCKS") || map.get(0).equals("ALL_STOCKS")))
             {
                 value = true;
             }
             else if (((i == 1) || (i > 1 && i % 3 == 1)) && !(map.get(i).equalsIgnoreCase("true"))
                     && !(map.get(i).equalsIgnoreCase("false"))
-                    && !(StringUtils.isNumeric(map.get(i).replaceAll("[$,]",""))))
+                    && !(StringUtils.isNumeric(map.get(i).replaceAll("[$,]","")))
+                    && searchValues.getValues().contains(map.get(i)))
             {
                 value = true;
             }
             else if (((i == 2) || (i > 2 && i % 3 == 2)) &&
-                    ((map.get(i).equalsIgnoreCase("true")) || (map.get(i).equalsIgnoreCase("false"))))
+                    ((map.get(i).equalsIgnoreCase("true")) || (map.get(i).equalsIgnoreCase("false")))
+                    || (map.get(i).equalsIgnoreCase("greater")) || (map.get(i).equalsIgnoreCase("less")))
             {
                 value = true;
             }
