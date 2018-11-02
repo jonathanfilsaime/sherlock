@@ -32,7 +32,7 @@ public class QueryParser {
         }
         else
         {
-            throw new IncorrectQuerySyntaxException("incorrect syntax");
+            throw new RuntimeException(new IncorrectQuerySyntaxException("incorrect syntax"));
         }
     }
 
@@ -52,10 +52,15 @@ public class QueryParser {
         }
         else
         {
-            throw new IncorrectQuerySyntaxException("incorrect syntax");
+            throw new RuntimeException(new IncorrectQuerySyntaxException("incorrect syntax"));
         }
     }
 
+    /**
+     * this method creates map from the body passed in the POST request
+     * @param requestObject
+     * @return Map<Integer, String>
+     */
     private Map<Integer, String>
     createValueMapFromRequestObject(RequestObject requestObject)
     {
@@ -75,6 +80,11 @@ public class QueryParser {
         return map;
     }
 
+    /**
+     * this method creates map from the Param string passed in the GET request
+     * @param strings
+     * @return Map<Integer, String>
+     */
     private Map<Integer, String> createValueMap(String[] strings) {
         Map<Integer, String> map = new HashMap<>();
 
@@ -92,10 +102,16 @@ public class QueryParser {
             else {
             }
         }
+        logger.info("createValueMap: " + map.toString());
         return map;
     }
 
-    private String queryStringBuilder(Map map) {
+    /**
+     * this method creates the sql string
+     * @param map
+     * @return String
+     */
+    private String queryStringBuilder(Map<Integer, String> map) {
 
         if (Validation.validateWhereCondition(map))
         {
@@ -113,10 +129,10 @@ public class QueryParser {
                     stringBuilder.append(map.get(i));
                 }
                 if (i > 1 && i % 3 == 2) {
-                    if (map.get(i).equals("greater") || map.get(i).equals("true") || map.get(i).equals("True")) {
+                    if (map.get(i).equalsIgnoreCase("greater") || map.get(i).equalsIgnoreCase("true")) {
                         stringBuilder.append(" >");
                     }
-                    if (map.get(i).equals("less") || map.get(i).equals("false") || map.get(i).equals("False")) {
+                    if (map.get(i).equalsIgnoreCase("less") || map.get(i).equalsIgnoreCase("false")) {
                         stringBuilder.append(" <");
                     }
                 }
