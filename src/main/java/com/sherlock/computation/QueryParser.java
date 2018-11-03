@@ -61,8 +61,7 @@ public class QueryParser {
      * @param requestObject
      * @return Map<Integer, String>
      */
-    private Map<Integer, String>
-    createValueMapFromRequestObject(RequestObject requestObject)
+    public Map<Integer, String> createValueMapFromRequestObject(RequestObject requestObject)
     {
         Map<Integer, String> map = new HashMap<>();
         map.put(0, requestObject.getFind());
@@ -85,7 +84,7 @@ public class QueryParser {
      * @param strings
      * @return Map<Integer, String>
      */
-    private Map<Integer, String> createValueMap(String[] strings) {
+    public Map<Integer, String> createValueMap(String[] strings) {
         Map<Integer, String> map = new HashMap<>();
 
         for (int i = 0; i < strings.length; i++)
@@ -111,7 +110,7 @@ public class QueryParser {
      * @param map
      * @return String
      */
-    private String queryStringBuilder(Map<Integer, String> map) {
+    public String queryStringBuilder(Map<Integer, String> map) {
 
         if (Validation.validateWhereCondition(map))
         {
