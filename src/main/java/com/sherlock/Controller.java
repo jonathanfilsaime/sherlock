@@ -1,4 +1,4 @@
-package com.sherlock.controllers;
+package com.sherlock;
 
 import com.sherlock.computation.QueryParser;
 import com.sherlock.computation.ResponseCreator;
