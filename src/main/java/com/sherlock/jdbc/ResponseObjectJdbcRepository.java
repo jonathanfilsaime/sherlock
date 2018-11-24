@@ -1,9 +1,11 @@
 package com.sherlock.jdbc;
 
-import com.sherlock.model.ResponseObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ResponseObjectJdbcRepository {
@@ -11,8 +13,9 @@ public class ResponseObjectJdbcRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public Iterable<ResponseObject> query(String sql) {
-        Iterable<ResponseObject> responseObjects = jdbcTemplate.query(sql, new ResponseObjectRowMapper());
+    public List<Map<String, Object>> query(String sql) {
+        List<Map<String, Object>> responseObjects = jdbcTemplate.queryForList(sql);
+
         return responseObjects;
     }
 

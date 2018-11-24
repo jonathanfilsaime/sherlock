@@ -17,6 +17,8 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class Controller {
@@ -37,7 +39,7 @@ public class Controller {
      */
     @ApiOperation(value = "Returns rows which meets the conditions passed in", response = ResponseObject.class)
     @RequestMapping(path="/search/param", method = RequestMethod.GET, produces = "application/json")
-    public Iterable<ResponseObject> searchParam(@RequestParam(value="search", required=true) String sql)
+    public List<Map<String, Object>> searchParam(@RequestParam(value="search", required=true) String sql)
     {
         QueryParser qp = new QueryParser();
         logger.info("sql string: " + sql);
@@ -52,7 +54,7 @@ public class Controller {
      */
     @ApiOperation(value = "Returns rows which meets the conditions passed in", response = ResponseObject.class)
     @RequestMapping(path="/search", method = RequestMethod.POST, consumes="application/json", produces = "application/json")
-    public Iterable<ResponseObject> search(@Valid @RequestBody RequestObject requestObject)
+    public List<Map<String, Object>> search(@Valid @RequestBody RequestObject requestObject)
     {
         QueryParser qp = new QueryParser();
         logger.info("request object:" + requestObject);
