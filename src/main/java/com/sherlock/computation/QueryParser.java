@@ -115,7 +115,7 @@ public class QueryParser {
         if (Validation.validateWhereCondition(map))
         {
             StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("SELECT * FROM financial_data WHERE");
+            stringBuilder.append("SELECT TICKER_SYMBOL FROM financial_data WHERE");
 
             for (int i = 0; i < map.size(); i++)
             {
